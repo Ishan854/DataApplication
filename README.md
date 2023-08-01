@@ -23,7 +23,7 @@ Steps to run the project:
 3. Install Django
 - pip install django
 4. Upgrade pip package installer
-- python -m pip install --upgrade
+- python -m pip install --upgrade pip
 5. Migrations
 - python manage.py makemigrations
 - python manage.py migrate

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        ul.navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        ul.navbar li {
+            float: right;
+        }
+
+        ul.navbar li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        ul.navbar li a:hover {
+            background-color: #111;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Application</title>
+</head>
+
+<body>
+    <ul class="navbar">
+        <li><a href="{% url 'plot' %}">Plot</a></li>
+        <li><a href="{% url 'fetch_data' %}">Fetched Data</a></li>
+        <li><a href="{% url 'compute_data' %}">Compute Data</a></li>
+        <li><a href="{% url 'upload_data' %}">Data</a></li>
+        <li><a href="{% url 'home' %}">Home</a></li>
+    </ul>
+    <h1 style="text-align: center;">Compute Data</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="data_name">Data Name:</label>
+        <input type="text" name="data_name" required><br>
+        <label for="column_name">Column Name:</label>
+        <input type="text" name="column_name" required><br>
+        <label for="operation">Operation:</label>
+        <select name="operation" required>
+            <option value="min">Min</option>
+            <option value="max">Max</option>
+            <option value="sum">Sum</option>
+        </select><br>
+        <button type="submit">Compute</button>
+    </form>
+    <div id="result">Result: </div>
+    <script>
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const response = await fetch('{% url "compute_data" %}', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            document.querySelector('#result').textContent = `Result: ${data.result}`;
+        });
+    </script>
+</body>
+</html>

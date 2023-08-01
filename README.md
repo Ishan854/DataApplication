@@ -43,25 +43,35 @@ Steps to run the project:
 
 ## How to Use;
 
-Upload Dataset:
+### Upload Dataset:
 
 Navigate to the "Data" section.
 Click on the "Upload" button and select the dataset csv file from your computer.
 Wait for the upload process to complete.
 
-View Uploaded Datasets:
+![Screenshot (18)](https://github.com/Ishan854/DataApplication/assets/50164669/c44a99fb-b144-478c-abfe-530c56dd49ec)
+
+### View Uploaded Datasets:
 
 Go to the "Fetch Data" section to see a list of datasets you have uploaded.
 You should see the names and details of each uploaded dataset.
 
-Compute Data:
+![Screenshot (19)](https://github.com/Ishan854/DataApplication/assets/50164669/951c0268-7a5c-46ba-a7e2-b7b8baeb5760)
+
+
+### Compute Data:
 
 Navigate to Compute Data section and click on the name of the dataset you want to analyze and give data name, column name(column1, column2) and click on Result to see the value
 
-Data Visualization:
+![Screenshot (20)](https://github.com/Ishan854/DataApplication/assets/50164669/c80c6295-1a01-4e7e-adc7-782252c3a1cc)
+
+### Data Visualization:
 
 Navigate to Data section and select the dataset details page, explore the various visualization options available.
 Select the columns and click on plot to see the data visualization.
+
+![Screenshot (21)](https://github.com/Ishan854/DataApplication/assets/50164669/bee26a32-6f06-48f0-83c6-1a973a409c42)
+
  
 
   

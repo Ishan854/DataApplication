@@ -1,4 +1,4 @@
- # Data Application
+# Data Application
 
 Data Application is a Django-based web application that allows users to manage and analyze data. This application provides various features for data visualization, manipulation, and Ploting.
 

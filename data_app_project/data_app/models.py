@@ -10,4 +10,6 @@ class Person(models.Model):
     column1 = models.IntegerField(default=0)
     column2 = models.IntegerField(default=0)
     def __str__(self):
-        return f"Person: {self.id}"
+        # return f"Person: {self.id}"
+        return f"Row: {self.id}, Column1: {self.column1}, Column2: {self.column2}"
+

@@ -4,7 +4,7 @@ from .models import File, Person
 import pandas as pd
 import plotly.graph_objs as go
 import plotly.offline as opy
-import numpy as np  # Import NumPy for integer conversion
+import numpy as np  
 
 def home(request):
     return render(request, 'home.html')
@@ -12,10 +12,8 @@ def home(request):
 def create_db(file_path, data_name):
     df = pd.read_csv(file_path, delimiter=',')
     for index, row in df.iterrows():
-        Person.objects.create(
-            column1=row['column1'],
-            column2=row['column2']
-        )
+        person = Person(column1=row['column1'], column2=row['column2'])
+        person.save()
 
 def upload(request):
     if request.method == 'POST':
@@ -23,7 +21,7 @@ def upload(request):
         data_name = request.POST.get('dataName', '')
         obj = File.objects.create(file=file, data_name=data_name)
         create_db(obj.file.path, data_name)
-        return JsonResponse({'data_name': data_name})  # Return data_name in the response
+        return JsonResponse({'data_name': data_name})  
     return render(request, 'upload_data.html') 
 
 def fetch_data(request):
@@ -47,7 +45,7 @@ def compute_data(request):
             elif operation == 'sum':
                 result = df[column_name].sum()
 
-            return JsonResponse({'result': result.item()})  # Convert the result to Python int
+            return JsonResponse({'result': result.item()})  
         except File.DoesNotExist:
             return JsonResponse({'error': 'Data not found.'})
 
@@ -66,17 +64,17 @@ def plot(request):
             data_object = File.objects.get(data_name=data_name)
             df = pd.read_csv(data_object.file.path)
 
-            # Check if the specified columns exist in the data
+            
             if column1 not in df.columns or column2 not in df.columns:
                 return JsonResponse({'error': 'Invalid columns provided.'})
 
-            data_to_plot = df.head(30)  # Get the first 30 rows
+            data_to_plot = df.head(30)
 
-            # Get the data for the specified columns
+            
             x_data = data_to_plot[column1].values.tolist()
             y_data = data_to_plot[column2].values.tolist()
 
-            # Create the scatter plot
+            
             trace = go.Scatter(x=x_data, y=y_data, mode='markers', type='scatter')
             layout = go.Layout(title=f'Scatter Plot of {column1} against {column2}', xaxis={'title': column1}, yaxis={'title': column2})
             fig = go.Figure(data=[trace], layout=layout)

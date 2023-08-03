@@ -36,8 +36,8 @@
 <body>
     <ul class="navbar">
         <li><a href="{% url 'plot' %}">Plot</a></li>
-        <li><a href="{% url 'fetch_data' %}">Fetched Data</a></li>
         <li><a href="{% url 'compute_data' %}">Compute Data</a></li>
+        <li><a href="{% url 'fetch_data' %}">Fetched Data</a></li>
         <li><a href="{% url 'upload_data' %}">Data</a></li>
         <li><a href="{% url 'home' %}">Home</a></li>
     </ul>
@@ -69,6 +69,7 @@
             const data = await response.json();
             document.querySelector('#result').textContent = `Result: ${data.result}`;
         });
-    </script>
+    </script><br>
+    
 </body>
 </html>

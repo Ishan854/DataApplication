@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404  
 from django.http import JsonResponse
 from .models import File, Person
 import pandas as pd
 import plotly.graph_objs as go
 import plotly.offline as opy
 import numpy as np  
+
+data_set_name = " "
 
 def home(request):
     return render(request, 'home.html')
@@ -33,9 +35,16 @@ def compute_data(request):
         data_name = request.POST['data_name']
         column_name = request.POST['column_name']
         operation = request.POST['operation']
+        global data_set_name
+        data_set_name = data_name
+        print("Data Name:", data_name)
+        print("column_name:", column_name)
+        print("operation:", operation)
         try:
             data_object = File.objects.get(data_name=data_name)
             df = pd.read_csv(data_object.file.path)
+            print("df file", df.head)
+            print("df file", df)
             result = None
 
             if operation == 'min':
@@ -44,7 +53,6 @@ def compute_data(request):
                 result = df[column_name].max()
             elif operation == 'sum':
                 result = df[column_name].sum()
-
             return JsonResponse({'result': result.item()})  
         except File.DoesNotExist:
             return JsonResponse({'error': 'Data not found.'})
@@ -53,28 +61,27 @@ def compute_data(request):
 
 def plot(request):
     if request.method == 'GET':
-        data_name = request.GET.get('data_name', '')
-        column1 = request.GET.get('column1', '')
-        column2 = request.GET.get('column2', '')
-
-        if not data_name or not column1 or not column2:
-            return JsonResponse({'error': 'Invalid parameters.'})
-
+        data_name = data_set_name  
+        column1 = "column1" 
+        column2 =  "column2" 
+        print("Data Name:", data_name)
+        print("Column1:", column1)
+        print("Column2:", column2)
         try:
+            if not data_name or not column1 or not column2:
+                return JsonResponse({'error': 'Invalid parameters.'})
+
             data_object = File.objects.get(data_name=data_name)
             df = pd.read_csv(data_object.file.path)
 
-            
             if column1 not in df.columns or column2 not in df.columns:
                 return JsonResponse({'error': 'Invalid columns provided.'})
 
             data_to_plot = df.head(30)
 
-            
             x_data = data_to_plot[column1].values.tolist()
             y_data = data_to_plot[column2].values.tolist()
 
-            
             trace = go.Scatter(x=x_data, y=y_data, mode='markers', type='scatter')
             layout = go.Layout(title=f'Scatter Plot of {column1} against {column2}', xaxis={'title': column1}, yaxis={'title': column2})
             fig = go.Figure(data=[trace], layout=layout)
